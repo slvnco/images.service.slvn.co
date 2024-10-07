@@ -1,0 +1,20 @@
+name: "Build"
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: {}
+
+jobs:
+  publish-github:
+    permissions:
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update
+          sudo apt-get install debootstrap arch-install-scripts qemu-utils libguestfs-tools
+      - run: |
+          sudo bash ./clean.sh
+          sudo bash ./build.sh
