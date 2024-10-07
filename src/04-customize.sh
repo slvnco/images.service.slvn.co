@@ -25,6 +25,14 @@ apt-get update
 apt-get dist-upgrade -y
 apt-get autoremove --purge -y
 
+# Locales
+apt-get install -y \
+    locales
+
+locale-gen en_US.UTF-8
+update-locale LANG=en_US.UTF-8
+locale-gen
+
 # Basic packages.
 apt-get install -y \
     iotop \
