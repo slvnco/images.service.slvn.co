@@ -3,31 +3,31 @@ on:
   push:
     branches:
       - master
+      - next
   workflow_dispatch: {}
 
 jobs:
-  publish-github:
-    permissions:
-      packages: write
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        profile:
+          - cloud
     steps:
       - uses: actions/checkout@v4
       - run: |
           sudo apt-get update
           sudo apt-get install -y debootstrap arch-install-scripts qemu-utils libguestfs-tools
       - run: |
-          sudo bash ./clean.sh
-          sudo bash ./build.sh
-
+          sudo make ${{ matrix.profile }}
       - run: |
           pipx install b2
-
       - run: |
           b2v4 sync \
              --keep-days 90 \
              --replace-newer \
-             ./dist/ \
-             b2://images-service-slvn-co/images/
+             ./src/${{ matrix.profile }}/dist/ \
+             b2://images-service-slvn-co/images/${{ matrix.profile }}/
         env:
           B2_APPLICATION_KEY_ID: ${{ secrets.B2_APPLICATION_KEY_ID }}
           B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
