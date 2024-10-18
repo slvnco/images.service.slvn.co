@@ -4,7 +4,10 @@ set -e
 
 clean() {
     set +e
-    swapoff $SLVN_ROOTFS/mnt/swap/swapfile
+
+    if ! test -f "$f"; then
+        swapoff $SLVN_ROOTFS/mnt/swap/swapfile
+    fi
 
     umount $SLVN_ROOTFS/dev/pts
     umount $SLVN_ROOTFS/dev
@@ -57,8 +60,8 @@ apt-get autoremove --purge -y
 apt-get install -y \
     locales
 
-locale-gen en_US.UTF-8
-update-locale LANG=en_US.UTF-8
+sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
+echo 'LANG=en_US.UTF-8' > /etc/default/locale
 locale-gen
 
 # Basic packages.
