@@ -15,7 +15,7 @@ clean:
 # Cloud
 SRC_CLOUD = ./src/cloud
 cloud: export SLVN_BLOCK = /dev/nbd0
-cloud: export SLVN_DISK_IMAGE = ./dist/slvn-debian-$SLVN_VERSION-uefi-cloud-latest.img
+cloud: export SLVN_DISK_IMAGE = ./dist/slvn-debian-$(SLVN_VERSION)-uefi-cloud-latest.img
 cloud: $(SRC_CLOUD)/*.sh
 	$(MAKE) clean
 	cd $(SRC_CLOUD)/; $(foreach s, $^, echo "Running $(realpath $s)..."; bash "$(realpath $s)" || exit 1;)
