@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 virt-sysprep --add $SLVN_DISK_IMAGE --hostname default-hostname
 virt-sysprep --add $SLVN_DISK_IMAGE --enable machine-id
 virt-sparsify --in-place $SLVN_DISK_IMAGE

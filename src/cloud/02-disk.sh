@@ -1,5 +1,16 @@
 #!/bin/bash
 
+set -e
+
+clean() {
+    set +e
+    umount $SLVN_ROOTFS
+    qemu-nbd --disconnect $SLVN_BLOCK
+}
+trap 'clean' EXIT
+
+qemu-nbd --connect=$SLVN_BLOCK $SLVN_DISK_IMAGE
+
 # Parition
 parted --script --align optimal -- $SLVN_BLOCK \
   mklabel gpt \
@@ -16,8 +27,3 @@ mkfs.btrfs ${SLVN_BLOCK}p2
 mount ${SLVN_BLOCK}p2 $SLVN_ROOTFS
 btrfs subvolume create $SLVN_ROOTFS/@
 btrfs subvolume create $SLVN_ROOTFS/@swap
-
-umount $SLVN_ROOTFS
-mount ${SLVN_BLOCK}p2 $SLVN_ROOTFS -o 'subvol=@,noatime'
-mkdir -p $SLVN_ROOTFS/mnt/swap
-mount ${SLVN_BLOCK}p2 $SLVN_ROOTFS/mnt/swap -o 'subvol=@swap,noatime'

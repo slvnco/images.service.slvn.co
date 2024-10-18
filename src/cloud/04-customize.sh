@@ -1,6 +1,32 @@
 #!/bin/bash
 
+set -e
+
+clean() {
+    set +e
+    swapoff $SLVN_ROOTFS/mnt/swap/swapfile
+
+    umount $SLVN_ROOTFS/dev/pts
+    umount $SLVN_ROOTFS/dev
+    umount $SLVN_ROOTFS/proc
+    umount $SLVN_ROOTFS/sys
+    umount $SLVN_ROOTFS/tmp
+    umount $SLVN_ROOTFS/boot/efi
+    umount $SLVN_ROOTFS/mnt/swap
+    umount $SLVN_ROOTFS
+
+    qemu-nbd --disconnect $SLVN_BLOCK
+}
+trap 'clean' EXIT
+
+qemu-nbd --connect=$SLVN_BLOCK $SLVN_DISK_IMAGE
+
 # Mount
+mount ${SLVN_BLOCK}p2 $SLVN_ROOTFS -o 'subvol=@,noatime'
+mkdir -p $SLVN_ROOTFS/mnt/swap
+mount ${SLVN_BLOCK}p2 $SLVN_ROOTFS/mnt/swap -o 'subvol=@swap,noatime'
+mkdir -p ${SLVN_ROOTFS}/boot/efi
+mount ${SLVN_BLOCK}p1 ${SLVN_ROOTFS}/boot/efi
 mount --bind /dev ${SLVN_ROOTFS}/dev
 mount -t devpts /dev/pts ${SLVN_ROOTFS}/dev/pts
 mount -t proc proc ${SLVN_ROOTFS}/proc
@@ -11,6 +37,8 @@ mount -t tmpfs tmpfs ${SLVN_ROOTFS}/tmp
 genfstab -t UUID $SLVN_ROOTFS > $SLVN_ROOTFS/etc/fstab
 
 chroot $SLVN_ROOTFS /bin/bash <<EOF
+
+set -e
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -118,18 +146,3 @@ UUID=$(blkid ${SLVN_BLOCK}p2 -s UUID -o value) /mnt/swap btrfs defaults,noatime,
 
 /mnt/swap/swapfile none swap defaults 0 0
 EOL
-
-# Unmount stuffs.
-swapoff $SLVN_ROOTFS/mnt/swap/swapfile
-umount $SLVN_ROOTFS/dev/pts
-umount $SLVN_ROOTFS/dev
-umount $SLVN_ROOTFS/proc
-umount $SLVN_ROOTFS/sys
-umount $SLVN_ROOTFS/tmp
-umount $SLVN_ROOTFS/boot/efi
-umount $SLVN_ROOTFS/mnt/swap
-umount $SLVN_ROOTFS
-
-mount | grep $SLVN_ROOTFS
-
-qemu-nbd --disconnect $SLVN_BLOCK
