@@ -135,3 +135,7 @@ xorriso \
         -isohybrid-gpt-basdat \
     -append_partition 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B ${SLVN_DIST}/final/staging/efiboot.img \
     "${SLVN_DIST}/final/staging"
+
+# Just to keep the pipelines consistant.
+rm -rf ${SLVN_DIST}/final
+rm -rf ${SLVN_ROOTFS}
