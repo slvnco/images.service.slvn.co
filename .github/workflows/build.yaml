@@ -13,11 +13,29 @@ jobs:
       matrix:
         profile:
           - cloud
+          - live
     steps:
       - uses: actions/checkout@v4
       - run: |
           sudo apt-get update
-          sudo apt-get install -y debootstrap arch-install-scripts qemu-utils libguestfs-tools
+          # Live
+          sudo apt-get install -y \
+              debootstrap \
+              squashfs-tools \
+              xorriso \
+              isolinux \
+              syslinux-efi \
+              grub-pc-bin \
+              grub-efi-amd64-bin \
+              grub-efi-ia32-bin \
+              mtools \
+              dosfstools
+          # Cloud
+          sudo apt-get install -y \
+            debootstrap \
+            arch-install-scripts \
+            qemu-utils \
+            libguestfs-tools
       - run: |
           sudo make ${{ matrix.profile }}
       - run: |
