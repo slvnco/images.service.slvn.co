@@ -83,7 +83,7 @@ usermod -p "$6$m3rp1XaBgcDgGVj5$DgZhEYp31DXKcuAi6a10zHELK6V64cfKRtUmo2XxjBUs.Dlr
 # Sysprep manually
 rm /etc/ssh/ssh_host_*
 rm /etc/ssh/moduli
-rm /var/lib/systemd/random-seed
+rm -f /var/lib/systemd/random-seed # Doesn't normally exist in chroot.
 rm /etc/machine-id
 
 exit
