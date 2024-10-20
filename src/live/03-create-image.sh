@@ -58,28 +58,28 @@ set timeout=30
 
 menuentry "Debian Live [EFI/GRUB]" {
     search --no-floppy --set=root --label DEBLIVE
-    linux ($root)/live/vmlinuz boot=live
-    initrd ($root)/live/initrd
+    linux (\$root)/live/vmlinuz boot=live
+    initrd (\$root)/live/initrd
 }
 
 menuentry "Debian Live [EFI/GRUB] (nomodeset)" {
     search --no-floppy --set=root --label DEBLIVE
-    linux ($root)/live/vmlinuz boot=live nomodeset
-    initrd ($root)/live/initrd
+    linux (\$root)/live/vmlinuz boot=live nomodeset
+    initrd (\$root)/live/initrd
 }
 EOF
 
 cp ${SLVN_DIST}/final/staging/boot/grub/grub.cfg ${SLVN_DIST}/final/staging/EFI/BOOT/
 
 cat <<EOF > ${SLVN_DIST}/final/tmp/grub-embed.cfg
-if ! [ -d "$cmdpath" ]; then
+if ! [ -d "\$cmdpath" ]; then
     # On some firmware, GRUB has a wrong cmdpath when booted from an optical disc.
     # https://gitlab.archlinux.org/archlinux/archiso/-/issues/183
-    if regexp --set=1:isodevice '^(\([^)]+\))\/?[Ee][Ff][Ii]\/[Bb][Oo][Oo][Tt]\/?$' "$cmdpath"; then
-        cmdpath="${isodevice}/EFI/BOOT"
+    if regexp --set=1:isodevice '^(\([^)]+\))\/?[Ee][Ff][Ii]\/[Bb][Oo][Oo][Tt]\/?$' "\$cmdpath"; then
+        cmdpath="\${isodevice}/EFI/BOOT"
     fi
 fi
-configfile "${cmdpath}/grub.cfg"
+configfile "\${cmdpath}/grub.cfg"
 EOF
 
 cp /usr/lib/ISOLINUX/isolinux.bin ${SLVN_DIST}/final/staging/isolinux/
@@ -108,16 +108,16 @@ grub-mkstandalone -O x86_64-efi \
     mkfs.vfat efiboot.img && \
     mmd -i efiboot.img ::/EFI ::/EFI/BOOT && \
     mcopy -vi efiboot.img \
-        "${SLVN_DIST}/final/staging/EFI/BOOT/BOOTIA32.EFI" \
-        "${SLVN_DIST}/final/staging/EFI/BOOT/BOOTx64.EFI" \
-        "${SLVN_DIST}/final/staging/boot/grub/grub.cfg" \
+        ./EFI/BOOT/BOOTIA32.EFI \
+        ./EFI/BOOT/BOOTx64.EFI \
+        ./boot/grub/grub.cfg \
         ::/EFI/BOOT/
 )
 
 xorriso \
     -as mkisofs \
     -iso-level 3 \
-    -o "${SLVN_DIST}/slvn.iso" \
+    -o $SLVN_DISK_IMAGE \
     -full-iso9660-filenames \
     -volid "DEBLIVE" \
     --mbr-force-bootable -partition_offset 16 \

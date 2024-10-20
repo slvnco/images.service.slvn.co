@@ -78,13 +78,7 @@ echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAotshvvlSdxIHJpVyZEd+wO2Y22U63nihJ9yF
 chmod 600 /root/.ssh/authorized_keys
 
 # Root User Password
-usermod -p "$6$m3rp1XaBgcDgGVj5$DgZhEYp31DXKcuAi6a10zHELK6V64cfKRtUmo2XxjBUs.DlrFhkJlZupgJhzoUug/wj9GUaEQlmjWmJAo97IH1" root
-
-# Sysprep manually
-rm /etc/ssh/ssh_host_*
-rm /etc/ssh/moduli
-rm -f /var/lib/systemd/random-seed # Doesn't normally exist in chroot.
-rm /etc/machine-id
+usermod -p '\$6\$m3rp1XaBgcDgGVj5\$DgZhEYp31DXKcuAi6a10zHELK6V64cfKRtUmo2XxjBUs.DlrFhkJlZupgJhzoUug/wj9GUaEQlmjWmJAo97IH1' root
 
 exit
 EOF
