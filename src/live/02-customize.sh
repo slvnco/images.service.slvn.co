@@ -13,11 +13,11 @@ clean() {
 trap 'clean' EXIT
 
 # Mount
-mount --bind /dev ${$SLVN_ROOTFS}/dev
-mount -t devpts /dev/pts ${$SLVN_ROOTFS}/dev/pts
-mount -t proc proc ${$SLVN_ROOTFS}/proc
-mount -t sysfs sysfs ${$SLVN_ROOTFS}/sys
-mount -t tmpfs tmpfs ${$SLVN_ROOTFS}/tmp
+mount --bind /dev ${SLVN_ROOTFS}/dev
+mount -t devpts /dev/pts ${SLVN_ROOTFS}/dev/pts
+mount -t proc proc ${SLVN_ROOTFS}/proc
+mount -t sysfs sysfs ${SLVN_ROOTFS}/sys
+mount -t tmpfs tmpfs ${SLVN_ROOTFS}/tmp
 
 chroot $SLVN_ROOTFS /bin/bash <<EOF
 
