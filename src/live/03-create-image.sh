@@ -9,8 +9,8 @@ mksquashfs \
     ${SLVN_DIST}/final/staging/live/filesystem.squashfs \
     -e boot
 
-cp ${SLVN_ROOTFS}/boot/vmlinuz-* ${SLVN_DIST}/final/live/vmlinuz
-cp ${SLVN_ROOTFS}/boot/initrd.img-* ${SLVN_DIST}/final/live/initrd
+cp ${SLVN_ROOTFS}/boot/vmlinuz-* ${SLVN_DIST}/final/staging/live/vmlinuz
+cp ${SLVN_ROOTFS}/boot/initrd.img-* ${SLVN_DIST}/final/staging/live/initrd
 
 cat <<EOF > ${SLVN_DIST}/final/staging/isolinux/isolinux.cfg
 UI vesamenu.c32
