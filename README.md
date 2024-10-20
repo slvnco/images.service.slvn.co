@@ -2,7 +2,8 @@
 
 ## Images
 
-- [cloud/slvn-debian-bookworm-uefi-cloud-latest](https://f001.backblazeb2.com/file/images-service-slvn-co/images/cloud/slvn-debian-bookworm-uefi-cloud-latest.img)
+- [cloud/slvn-debian-bookworm-uefi-cloud-latest](https://images.service.silvenga.com/images/cloud/slvn-debian-bookworm-uefi-cloud-latest.img)
+- [live/slvn-debian-bookworm-live-latest](https://images.service.silvenga.com/images/live/slvn-debian-bookworm-live-latest.iso)
 
 ## Dependencies
 
@@ -14,4 +15,5 @@ apt-get install debootstrap arch-install-scripts qemu-utils libguestfs-tools
 
 ```bash
 make cloud
+make live
 ```
