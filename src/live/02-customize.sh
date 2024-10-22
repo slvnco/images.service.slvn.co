@@ -59,7 +59,11 @@ apt-get install -y \
     linux-image-amd64 \
     live-boot \
     ntp \
-    systemd-sysv
+    systemd-sysv \
+    cryptsetup \
+    debootstrap \
+    arch-install-scripts \
+    parted
 
 apt-get autoremove -y --purge
 apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin
