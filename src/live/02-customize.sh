@@ -58,6 +58,7 @@ apt-get install -y \
     openssh-server \
     linux-image-amd64 \
     live-boot \
+    ntp \
     systemd-sysv
 
 apt-get autoremove -y --purge
