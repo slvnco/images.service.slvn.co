@@ -131,6 +131,20 @@ update-grub
 apt-get autoremove -y --purge
 apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin
 
+# Login TTY Screen
+echo "Time: \\d \\t" >> /etc/issue
+echo "IPv4: \\4" >> /etc/issue
+echo "IPv6: \\6" >> /etc/issue
+
+# Authorized Keys
+mkdir -p /root/.ssh
+chmod 700 /root/.ssh
+echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAotshvvlSdxIHJpVyZEd+wO2Y22U63nihJ9yFBIlpv0 ed25519-gen3-level3" > /root/.ssh/authorized_keys
+chmod 600 /root/.ssh/authorized_keys
+
+# Root User Password
+usermod -p '\$6\$m3rp1XaBgcDgGVj5\$DgZhEYp31DXKcuAi6a10zHELK6V64cfKRtUmo2XxjBUs.DlrFhkJlZupgJhzoUug/wj9GUaEQlmjWmJAo97IH1' root
+
 # Done!
 exit
 
