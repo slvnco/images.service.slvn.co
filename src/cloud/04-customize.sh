@@ -154,12 +154,6 @@ auto /e*=eth
 iface eth inet dhcp
 EOL
 
-# Login TTY Screen
-echo "Time: \\d \\t" >> /etc/issue
-echo "IPv4: \\4" >> /etc/issue
-echo "IPv6: \\6" >> /etc/issue
-echo "" >> /etc/issue
-
 # Authorized Keys
 mkdir -p /root/.ssh
 chmod 700 /root/.ssh
