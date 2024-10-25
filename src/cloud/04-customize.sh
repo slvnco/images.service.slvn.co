@@ -78,6 +78,7 @@ apt-get install -y \
     qemu-guest-agent \
     bash-completion \
     openssh-server \
+    openssh-client \
     ntp \
     sudo
 
@@ -128,13 +129,36 @@ EOL
 grub-install ${SLVN_BLOCK}
 update-grub
 
-apt-get autoremove -y --purge
-apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin
+# SSH Keys
+# https://gist.github.com/TimJDFletcher/f402251a1b955e47c22ef245c343621a
+cat >/etc/systemd/system/ssh-keygen.service <<EOL
+[Unit]
+Description=Generate sshd host keys
+Before=ssh.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ssh-keygen -A
+RemainAfterExit=true
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+systemctl enable ssh-keygen.service
+
+# Networking
+cat >/etc/network/interfaces.d/00-default <<EOL
+auto /e*=eth
+iface eth inet dhcp
+EOL
 
 # Login TTY Screen
 echo "Time: \\d \\t" >> /etc/issue
 echo "IPv4: \\4" >> /etc/issue
 echo "IPv6: \\6" >> /etc/issue
+echo "" >> /etc/issue
 
 # Authorized Keys
 mkdir -p /root/.ssh
@@ -144,6 +168,10 @@ chmod 600 /root/.ssh/authorized_keys
 
 # Root User Password
 usermod -p '\$6\$m3rp1XaBgcDgGVj5\$DgZhEYp31DXKcuAi6a10zHELK6V64cfKRtUmo2XxjBUs.DlrFhkJlZupgJhzoUug/wj9GUaEQlmjWmJAo97IH1' root
+
+# Cleanup
+apt-get autoremove -y --purge
+apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin
 
 # Done!
 exit
