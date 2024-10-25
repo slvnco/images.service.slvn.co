@@ -14,16 +14,17 @@ qemu-nbd --connect=$SLVN_BLOCK $SLVN_DISK_IMAGE
 # Parition
 parted --script --align optimal -- $SLVN_BLOCK \
   mklabel gpt \
-  mkpart primary 1MiB 1GiB \
-  set 1 esp on \
+  mkpart primary 1MiB 2MiB \
+  set 1 bios_grub on \
+  mkpart primary 2MiB 1GiB \
   mkpart primary 1GiB 100% \
   print
 
 # Create Filesystems.
-mkfs.vfat -F 32 -n ESP ${SLVN_BLOCK}p1
-mkfs.btrfs ${SLVN_BLOCK}p2
+mkfs.ext4 ${SLVN_BLOCK}p2
+mkfs.btrfs ${SLVN_BLOCK}p3
 
 # Subvolumes.
-mount ${SLVN_BLOCK}p2 $SLVN_ROOTFS
+mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS
 btrfs subvolume create $SLVN_ROOTFS/@
 btrfs subvolume create $SLVN_ROOTFS/@swap

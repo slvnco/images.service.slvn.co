@@ -14,7 +14,7 @@ clean() {
     umount $SLVN_ROOTFS/proc
     umount $SLVN_ROOTFS/sys
     umount $SLVN_ROOTFS/tmp
-    umount $SLVN_ROOTFS/boot/efi
+    umount $SLVN_ROOTFS/boot
     umount $SLVN_ROOTFS/mnt/swap
     umount $SLVN_ROOTFS
 
@@ -25,11 +25,11 @@ trap 'clean' EXIT
 qemu-nbd --connect=$SLVN_BLOCK $SLVN_DISK_IMAGE
 
 # Mount
-mount ${SLVN_BLOCK}p2 $SLVN_ROOTFS -o 'subvol=@,noatime'
+mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS -o 'subvol=@,noatime'
 mkdir -p $SLVN_ROOTFS/mnt/swap
-mount ${SLVN_BLOCK}p2 $SLVN_ROOTFS/mnt/swap -o 'subvol=@swap,noatime'
-mkdir -p ${SLVN_ROOTFS}/boot/efi
-mount ${SLVN_BLOCK}p1 ${SLVN_ROOTFS}/boot/efi
+mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS/mnt/swap -o 'subvol=@swap,noatime'
+mkdir -p ${SLVN_ROOTFS}/boot
+mount ${SLVN_BLOCK}p2 ${SLVN_ROOTFS}/boot
 mount --bind /dev ${SLVN_ROOTFS}/dev
 mount -t devpts /dev/pts ${SLVN_ROOTFS}/dev/pts
 mount -t proc proc ${SLVN_ROOTFS}/proc
@@ -66,7 +66,6 @@ locale-gen
 
 # Basic packages.
 apt-get install -y \
-    iotop \
     bmon \
     htop \
     wget \
@@ -75,12 +74,12 @@ apt-get install -y \
     ncdu \
     traceroute \
     tmux \
-    git \
-    cloud-init \
     btrfs-progs \
     qemu-guest-agent \
     bash-completion \
-    openssh-server
+    openssh-server \
+    ntp \
+    sudo
 
 # Swap.
 truncate -s 0 /mnt/swap/swapfile
@@ -90,7 +89,7 @@ chmod 0600 /mnt/swap/swapfile
 mkswap /mnt/swap/swapfile
 swapon /mnt/swap/swapfile
 
-apt-get install linux-image-amd64 grub-efi -y
+apt-get install linux-image-amd64 grub-pc -y
 
 cat >/etc/default/grub <<EOL
 # This file was overwritten during base-image building.
@@ -126,7 +125,7 @@ GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=0 --word=8 --parity=no --stop=
 GRUB_DISABLE_OS_PROBER=true
 EOL
 
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=debian --recheck --no-nvram
+grub-install ${SLVN_BLOCK}
 update-grub
 
 apt-get autoremove -y --purge
@@ -143,9 +142,9 @@ cat >$SLVN_ROOTFS/etc/fstab <<EOL
 #
 # <file system> <mount point> <type> <options> <dump> <pass>
 
-UUID=$(blkid ${SLVN_BLOCK}p1 -s UUID -o value) /boot/efi vfat defaults 0 2
-UUID=$(blkid ${SLVN_BLOCK}p2 -s UUID -o value) / btrfs defaults,noatime,subvol=@ 0 0
-UUID=$(blkid ${SLVN_BLOCK}p2 -s UUID -o value) /mnt/swap btrfs defaults,noatime,subvol=@swap 0 0
+UUID=$(blkid ${SLVN_BLOCK}p2 -s UUID -o value) /boot ext4 defaults 0 2
+UUID=$(blkid ${SLVN_BLOCK}p3 -s UUID -o value) / btrfs defaults,noatime,subvol=@ 0 0
+UUID=$(blkid ${SLVN_BLOCK}p3 -s UUID -o value) /mnt/swap btrfs defaults,noatime,subvol=@swap 0 0
 
 /mnt/swap/swapfile none swap defaults 0 0
 EOL
