@@ -80,7 +80,8 @@ apt-get install -y \
     openssh-server \
     openssh-client \
     ntp \
-    sudo
+    sudo \
+    dosfstools
 
 # Swap.
 truncate -s 0 /mnt/swap/swapfile
