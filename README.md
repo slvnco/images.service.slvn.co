@@ -2,7 +2,7 @@
 
 ## Images
 
-- [cloud/slvn-debian-bookworm-uefi-cloud-latest](https://images.service.silvenga.com/images/cloud/slvn-debian-bookworm-uefi-cloud-latest.img)
+- [cloud/slvn-debian-bookworm-bios-cloud-latest](https://images.service.silvenga.com/images/cloud/slvn-debian-bookworm-bios-cloud-latest.img)
 - [live/slvn-debian-bookworm-live-latest](https://images.service.silvenga.com/images/live/slvn-debian-bookworm-live-latest.iso)
 
 ## Dependencies
