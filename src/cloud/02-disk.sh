@@ -20,6 +20,8 @@ parted --script --align optimal -- $SLVN_BLOCK \
   mkpart primary 1GiB 100% \
   print
 
+lsblk
+
 # Create Filesystems.
 mkfs.ext4 ${SLVN_BLOCK}p2
 mkfs.btrfs ${SLVN_BLOCK}p3
