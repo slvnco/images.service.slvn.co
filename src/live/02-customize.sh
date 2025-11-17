@@ -63,7 +63,8 @@ apt-get install -y \
     cryptsetup \
     debootstrap \
     arch-install-scripts \
-    parted
+    parted \
+    dosfstools
 
 apt-get autoremove -y --purge
 apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin
