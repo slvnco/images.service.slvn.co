@@ -1,7 +1,9 @@
 #!/usr/bin/make -f
 
+SLVN_VERSION ?= bookworm
+
 # Global
-export SLVN_VERSION = bookworm
+export SLVN_VERSION
 export SLVN_ROOTFS = ./dist/rootfs
 export SLVN_DIST = ./dist
 

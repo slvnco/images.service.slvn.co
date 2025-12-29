@@ -17,4 +17,3 @@ mkdir -p $SLVN_ROOTFS/mnt/swap
 mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS/mnt/swap -o 'subvol=@swap,noatime'
 
 debootstrap --arch=amd64 $SLVN_VERSION $SLVN_ROOTFS http://deb.debian.org/debian
-

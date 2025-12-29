@@ -10,4 +10,3 @@ sudo debootstrap \
     ${SLVN_VERSION} \
     ${SLVN_ROOTFS} \
     http://deb.debian.org/debian
-
