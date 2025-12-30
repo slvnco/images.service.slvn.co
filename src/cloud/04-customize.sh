@@ -73,13 +73,15 @@ apt-get install -y \
     nmon \
     ncdu \
     traceroute \
+    mtr-tiny \
+    dnsutils \
     tmux \
     btrfs-progs \
     qemu-guest-agent \
     bash-completion \
     openssh-server \
     openssh-client \
-    ntp \
+    systemd-timesyncd \
     sudo \
     dosfstools
 

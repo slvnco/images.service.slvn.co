@@ -52,14 +52,16 @@ apt-get install -y \
     nmon \
     ncdu \
     traceroute \
+    mtr-tiny \
+    dnsutils \
     tmux \
     btrfs-progs \
     bash-completion \
     openssh-server \
+    openssh-client \
     linux-image-amd64 \
     live-boot \
-    ntp \
-    systemd-sysv \
+    systemd-timesyncd \
     cryptsetup \
     debootstrap \
     arch-install-scripts \
