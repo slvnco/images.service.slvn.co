@@ -83,7 +83,8 @@ apt-get install -y \
     openssh-client \
     systemd-timesyncd \
     sudo \
-    dosfstools
+    dosfstools \
+    python3
 
 # Swap.
 truncate -s 0 /mnt/swap/swapfile

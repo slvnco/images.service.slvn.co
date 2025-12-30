@@ -66,7 +66,8 @@ apt-get install -y \
     debootstrap \
     arch-install-scripts \
     parted \
-    dosfstools
+    dosfstools \
+    python3
 
 apt-get autoremove -y --purge
 apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin
