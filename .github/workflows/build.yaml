@@ -18,28 +18,32 @@ jobs:
         version:
           - bookworm
           - trixie
+        include:
+          - profile: cloud
+            setup: |
+              sudo apt-get update
+              sudo apt-get install -y \
+                debootstrap \
+                arch-install-scripts \
+                qemu-utils \
+                libguestfs-tools
+          - profile: live
+            setup: |
+              sudo apt-get update
+              sudo apt-get install -y \
+                  debootstrap \
+                  squashfs-tools \
+                  xorriso \
+                  isolinux \
+                  syslinux-efi \
+                  grub-pc-bin \
+                  grub-efi-amd64-bin \
+                  grub-efi-ia32-bin \
+                  mtools \
+                  dosfstools
     steps:
-      - uses: actions/checkout@v4
-      - run: |
-          sudo apt-get update
-          # Live
-          sudo apt-get install -y \
-              debootstrap \
-              squashfs-tools \
-              xorriso \
-              isolinux \
-              syslinux-efi \
-              grub-pc-bin \
-              grub-efi-amd64-bin \
-              grub-efi-ia32-bin \
-              mtools \
-              dosfstools
-          # Cloud
-          sudo apt-get install -y \
-            debootstrap \
-            arch-install-scripts \
-            qemu-utils \
-            libguestfs-tools
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - run: ${{ matrix.setup }}
       - run: |
           sudo SLVN_VERSION=${{ matrix.version }} make ${{ matrix.profile }}
       - run: |
