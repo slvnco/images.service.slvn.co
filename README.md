@@ -9,6 +9,8 @@
 
 ### Bookworm (12)
 
+> No longer updated.
+
 - [cloud/bookworm/slvn-debian-bookworm-bios-cloud-latest](https://images.service.silvenga.com/images/cloud/bookworm/slvn-debian-bookworm-bios-cloud-latest.img)
 - [live/bookworm/slvn-debian-bookworm-live-latest](https://images.service.silvenga.com/images/live/bookworm/slvn-debian-bookworm-live-latest.iso)
 

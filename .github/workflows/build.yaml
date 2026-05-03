@@ -16,7 +16,6 @@ jobs:
           - cloud
           - live
         version:
-          - bookworm
           - trixie
         include:
           - profile: cloud

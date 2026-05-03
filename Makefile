@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-SLVN_VERSION ?= bookworm
+SLVN_VERSION ?= trixie
 
 # Global
 export SLVN_VERSION
