@@ -25,7 +25,7 @@ trap 'clean' EXIT
 qemu-nbd --connect=$SLVN_BLOCK $SLVN_DISK_IMAGE
 
 # Mount
-mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS -o 'subvol=@,noatime'
+mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS -o 'subvol=@,noatime,compress=zstd:1'
 mkdir -p $SLVN_ROOTFS/mnt/swap
 mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS/mnt/swap -o 'subvol=@swap,noatime'
 mkdir -p ${SLVN_ROOTFS}/boot
@@ -183,7 +183,7 @@ cat >$SLVN_ROOTFS/etc/fstab <<EOL
 # <file system> <mount point> <type> <options> <dump> <pass>
 
 UUID=$(blkid ${SLVN_BLOCK}p2 -s UUID -o value) /boot ext4 defaults 0 2
-UUID=$(blkid ${SLVN_BLOCK}p3 -s UUID -o value) / btrfs defaults,noatime,subvol=@ 0 0
+UUID=$(blkid ${SLVN_BLOCK}p3 -s UUID -o value) / btrfs defaults,noatime,compress=zstd:1,subvol=@ 0 0
 UUID=$(blkid ${SLVN_BLOCK}p3 -s UUID -o value) /mnt/swap btrfs defaults,noatime,subvol=@swap 0 0
 
 /mnt/swap/swapfile none swap defaults 0 0

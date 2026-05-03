@@ -12,7 +12,7 @@ trap 'clean' EXIT
 
 qemu-nbd --connect=$SLVN_BLOCK $SLVN_DISK_IMAGE
 
-mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS -o 'subvol=@,noatime'
+mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS -o 'subvol=@,noatime,compress=zstd:1'
 mkdir -p $SLVN_ROOTFS/mnt/swap
 mount ${SLVN_BLOCK}p3 $SLVN_ROOTFS/mnt/swap -o 'subvol=@swap,noatime'
 
